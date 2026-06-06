@@ -19,6 +19,10 @@ from app.modules.documents.router import router as documents_router
 from app.modules.inventory.router import router as inventory_router
 from app.modules.notifications.router import router as notifications_router
 from app.modules.dashboards.router import router as dashboards_router
+from app.modules.children.router import router as children_router
+from app.modules.kitchen.router import router as kitchen_router
+from app.modules.sales.router import router as sales_router
+from app.modules.guests.router import router as guests_router
 
 
 @asynccontextmanager
@@ -53,6 +57,10 @@ app.include_router(documents_router)
 app.include_router(inventory_router)
 app.include_router(notifications_router)
 app.include_router(dashboards_router)
+app.include_router(children_router)
+app.include_router(kitchen_router)
+app.include_router(sales_router)
+app.include_router(guests_router)
 
 
 @app.get("/api/v1/health")
