@@ -1,0 +1,54 @@
+version: '3.9'
+
+services:
+  api:
+    build: .
+    restart: always
+    env_file: .env
+    environment:
+      - DATABASE_URL=postgresql+asyncpg://eventops:${DB_PASSWORD}@db:5432/eventops
+      - REDIS_URL=redis://redis:6379/0
+    depends_on:
+      db:
+        condition: service_healthy
+      redis:
+        condition: service_started
+    ports:
+      - '8000:8000'
+
+  db:
+    image: postgres:16-alpine
+    restart: always
+    environment:
+      POSTGRES_USER: eventops
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      POSTGRES_DB: eventops
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ['CMD-SHELL', 'pg_isready -U eventops']
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  redis:
+    image: redis:7-alpine
+    restart: always
+    volumes:
+      - redis_data:/data
+
+  nginx:
+    image: nginx:alpine
+    restart: always
+    ports:
+      - '80:80'
+      - '443:443'
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf:ro
+      - /etc/letsencrypt:/etc/letsencrypt:ro
+    depends_on:
+      - api
+
+volumes:
+  postgres_data:
+  redis_data:

@@ -1,0 +1,27 @@
+# GitHub Actions — Deploy to AWS EC2 via SSH + Docker
+name: Deploy
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install SSH key
+        uses: shimataro/ssh-key-action@v2
+        with:
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          known_hosts: ${{ secrets.KNOWN_HOSTS }}
+
+      - name: Deploy
+        run: |
+          ssh ubuntu@${{ secrets.HOST }} '
+            cd /opt/eventops &&
+            git pull origin main &&
+            docker compose -f deploy/docker-compose.prod.yml build --pull &&
+            docker compose -f deploy/docker-compose.prod.yml up -d
+          '

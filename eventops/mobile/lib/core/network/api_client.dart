@@ -1,6 +1,7 @@
 import 'package:dio/dio.dart';
 
 import '../../config/env.dart';
+import '../storage/local_storage.dart';
 
 class ApiClient {
   late final Dio _dio;
@@ -23,17 +24,14 @@ class ApiClient {
       },
       onError: (error, handler) {
         if (error.response?.statusCode == 401) {
-          // TODO: redirect to login
+          LocalStorage.token = null;
         }
         return handler.next(error);
       },
     ));
   }
 
-  String? _getToken() {
-    // TODO: read from secure storage
-    return null;
-  }
+  String? _getToken() => LocalStorage.token;
 
   Future<Response> get(String path, {Map<String, dynamic>? params}) =>
       _dio.get(path, queryParameters: params);
@@ -44,6 +42,5 @@ class ApiClient {
   Future<Response> patch(String path, {dynamic data}) =>
       _dio.patch(path, data: data);
 
-  Future<Response> delete(String path) =>
-      _dio.delete(path);
+  Future<Response> delete(String path) => _dio.delete(path);
 }

@@ -29,9 +29,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (_) => AuthCubit(),
-      child: BlocConsumer<AuthCubit, AuthState>(
+    return BlocConsumer<AuthCubit, AuthState>(
         listener: (context, state) {
           if (state.status == AuthStatus.authenticated) {
             context.go('/dashboard');
