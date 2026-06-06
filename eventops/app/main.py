@@ -15,7 +15,10 @@ from app.modules.schedules.router import router as schedules_router
 from app.modules.tasks.router import router as tasks_router
 from app.websockets.handlers import router as ws_router
 from app.modules.chat.router import router as chat_router
+from app.modules.documents.router import router as documents_router
+from app.modules.inventory.router import router as inventory_router
 from app.modules.notifications.router import router as notifications_router
+from app.modules.dashboards.router import router as dashboards_router
 
 
 @asynccontextmanager
@@ -46,7 +49,10 @@ app.include_router(schedules_router)
 app.include_router(tasks_router)
 app.include_router(ws_router)
 app.include_router(chat_router)
+app.include_router(documents_router)
+app.include_router(inventory_router)
 app.include_router(notifications_router)
+app.include_router(dashboards_router)
 
 
 @app.get("/api/v1/health")
