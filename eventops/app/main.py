@@ -13,6 +13,9 @@ from app.modules.roles.router import router as roles_router
 from app.modules.users.router import router as users_router
 from app.modules.schedules.router import router as schedules_router
 from app.modules.tasks.router import router as tasks_router
+from app.websockets.handlers import router as ws_router
+from app.modules.chat.router import router as chat_router
+from app.modules.notifications.router import router as notifications_router
 
 
 @asynccontextmanager
@@ -41,6 +44,9 @@ app.include_router(roles_router)
 app.include_router(users_router)
 app.include_router(schedules_router)
 app.include_router(tasks_router)
+app.include_router(ws_router)
+app.include_router(chat_router)
+app.include_router(notifications_router)
 
 
 @app.get("/api/v1/health")
