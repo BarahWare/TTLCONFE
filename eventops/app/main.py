@@ -6,6 +6,8 @@ from fastapi.middleware.cors import CORSMiddleware
 from app.config import settings
 from app.database import engine, Base
 from app.modules.auth.router import router as auth_router
+from app.modules.organizations.router import router as organizations_router
+from app.modules.events.router import router as events_router
 
 
 @asynccontextmanager
@@ -27,6 +29,8 @@ app.add_middleware(
 )
 
 app.include_router(auth_router)
+app.include_router(organizations_router)
+app.include_router(events_router)
 
 
 @app.get("/api/v1/health")
